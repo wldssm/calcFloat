@@ -16,6 +16,8 @@
 	var as = calcFloat("953.03*0.85", 3);
 	console.log(as); // 810.076，(953.03*0.85).toFixed(3) = 810.075
 	
+	
+	// 参数 formula：公式，fixN：精确度
 	function calcFloat(formula, fixN) {
 		var numStr = formula.toString(), maxL = 0;
 		numStr.match(/\.\d+/g) && numStr.match(/\.\d+/g).forEach(function(item) {
