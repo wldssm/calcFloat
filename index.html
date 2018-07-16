@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+<title>浮点数计算</title>
+</head>
+<body>
+<script>
+/*
+	9.3+0.3
+	9.3-0.7
+	7*0.8
+	9.3/0.3
+	9.3/0.3*0.3+6
+	953.03*0.85
+*/
+	var as = calcFloat("953.03*0.85", 3);
+	console.log(as); // 810.076，(953.03*0.85).toFixed(3) = 810.075
+	
+	function calcFloat(formula, fixN) {
+		var numStr = formula.toString(), maxL = 0;
+		numStr.match(/\.\d+/g) && numStr.match(/\.\d+/g).forEach(function(item) {
+			maxL = Math.max(maxL, item.length);
+		});
+		maxL = Math.max(0, (maxL - 1));
+		
+		numStr = numStr.replace(/\d+(\.\d+)?/g, function(curV) {
+			return curV * Math.pow(10, maxL);
+		});
+		
+		if( /[\/\*]/.test(numStr) ) {
+			numStr = numStr.replace(/\d+(\.\d+)?[\*\/]\d+(\.\d+)?/, function(curV) {
+				var curOpera = numStr.match(/[\*\/]/)[0] == "*" ? "/" : "*";
+				return eval( eval(curV) + curOpera + Math.pow(10, maxL) );
+			});
+			numStr = numStr.replace(/\d+(\.\d+)?/g, function(curV) {
+				return curV / Math.pow(10, maxL);
+			});
+			return calcFloat(numStr, fixN);
+		}else{
+			var res = eval(numStr) / Math.pow(10, maxL);
+			res = fixN ? parseFloat(res.toFixed(fixN)) : res;
+			return res;
+		}
+	}
+</script>
+</body>
+</html>
